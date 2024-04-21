@@ -43,9 +43,9 @@ namespace PFE_API.Model
         {
             MatriculeEmp = matriculeEmp;
             Type = type;
-            DateCreation = DateTime.Now;
+            DateCreation = DateTime.UtcNow;
             EtatActuel = EtatDemande.EnAttente;
-            DateDebut = dateDebut;
+            DateDebut = dateDebut.ToUniversalTime();
             DateFin = dateFin;
             Commentaire = commentaire;
         }
@@ -63,7 +63,7 @@ namespace PFE_API.Model
         {
             MatriculeEmp = matriculeEmp;
             Type = TypeDemande.Document;
-            DateCreation = DateTime.Now;
+            DateCreation = DateTime.UtcNow;
             EtatActuel = EtatDemande.EnAttente;
             TypeDoc = document;
         }
@@ -81,7 +81,7 @@ namespace PFE_API.Model
         {
             MatriculeEmp = matriculeEmp;
             Type = TypeDemande.ChangementInfo;
-            DateCreation = DateTime.Now;
+            DateCreation = DateTime.UtcNow;
             EtatActuel = EtatDemande.EnAttente;
             NouvelleInformation = nv;
         }

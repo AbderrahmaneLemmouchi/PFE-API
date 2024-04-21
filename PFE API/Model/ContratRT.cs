@@ -20,7 +20,7 @@ namespace PFE_API.Model
         public string CodeContrat { get; set; } = codeContrat;
         public string MatriculeEmp { get; set; } = matriculeEmp;
         public string CategorieContrat { get; set; } = categorieContrat;
-        public DateTime DateDebut { get; set; } = dateDebut;
+        public DateTime DateDebut { get; set; } = dateDebut.ToUniversalTime();
         public DateTime? DateFin { get; set; } = dateFin;
         public DateTime? DateFinPeriodeEssai { get; set; } = dateFinPeriodeEssai;
         public string RegimeTravail { get; set; } = regimeTravail;

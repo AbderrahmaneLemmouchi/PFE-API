@@ -51,7 +51,7 @@ namespace PFE_API.Model
             NomArabe = nomArabe;
             PrenomArabe = prenomArabe;
             Prenom2Arabe = prenom2Arabe;
-            DateNaissance = dateNaissance;
+            DateNaissance = dateNaissance.ToUniversalTime();
             NomJeuneFille = nomJeuneFille;
             LieuNaissance = lieuNaissance;
             PaysNaissance = paysNaissance;

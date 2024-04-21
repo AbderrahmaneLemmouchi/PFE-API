@@ -51,5 +51,23 @@ namespace PFE_API
             var employees = db.Employees.Where(e => e.IDEquipe == idEquipe).ToList();
             return employees;
         }
+
+        public static IEnumerable<Employee> GetEmployeesByResponsable(string idResponsable)
+        {
+            var db = new DBcontext();
+            var employees = db.Employees.Where(e => e.IDResponsable == idResponsable).ToList();
+            return employees;
+        }
+
+        public static IEnumerable<Employee> GetEmployeesTreeFromResponsable(string idResponsable)
+        {
+            var db = new DBcontext();
+            var employees = db.Employees.Where(e => e.IDResponsable == idResponsable).ToList();
+            foreach (var employee in employees)
+            {
+                employees.AddRange(GetEmployeesTreeFromResponsable(employee.Matricule));
+            }
+            return employees;
+        }
     }
 }
