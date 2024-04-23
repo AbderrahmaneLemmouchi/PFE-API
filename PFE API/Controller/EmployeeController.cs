@@ -76,5 +76,23 @@ namespace PFE_API.Controllers
             EmployeeDbController.Insert(employee);
             return Ok();
         }
+
+        [HttpGet("GetByID")]
+        public IActionResult GetByID(string id)
+        {
+            return Ok(EmployeeDbController.GetEmployeeById(id));
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(string id)
+        {
+            if (EmployeeDbController.Delete(id))
+            {
+                return Ok();
+            }
+            return NotFound();
+        }
+
+
     }
 }

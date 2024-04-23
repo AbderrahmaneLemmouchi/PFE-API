@@ -13,13 +13,19 @@ namespace PFE_API
             }
         }
 
-        public static void Delete(Employee employee)
+        public static bool Delete(string mat)
         {
             using (var db = new DBcontext())
             {
+                var employee = db.Employees.Find(mat);
+                if (employee == null)
+                {
+                    return false;
+                }
                 db.Employees.Remove(employee);
                 db.SaveChanges();
             }
+            return true;
         }
 
         public static void Update(Employee employee)

@@ -10,6 +10,7 @@ namespace PFE_API
         public DbSet<Equipe> Equipes { get; set; }
         public DbSet<ContratRT> ContratsRT { get; set; }
         public DbSet<Historique> Historiques { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
         // Add other DbSets for your other models...
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

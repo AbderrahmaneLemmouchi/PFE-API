@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PFE_API.Model
@@ -35,13 +36,19 @@ namespace PFE_API.Model
         public int IDEquipe { get; set; }
         [ForeignKey("Employee")]
         public string? IDResponsable { get; set; }
+        public DateTime DateEntre { get; set; }
+        public DateTime? DateSortie { get; set; }
+        public int NbAnneeExperienceInterne { get; set; }
+        public int NbAnneeExperienceExterne { get; set; }
+        public int? NbEnfant { get; set; }
+
 
         public Employee() // Parameterless constructor
         {
             // Initialize properties with default values if needed
         }
 
-        public Employee(string matricule, string nss, string nom, string prenom, string prenom2, string nomArabe, string prenomArabe, string prenom2Arabe, DateTime dateNaissance, string nomJeuneFille, string lieuNaissance, string paysNaissance, string wilayaNaissance, string communeNaissance, string sexe, string titre, string situationFamiliale, string nationalites, string telephone, string mobile, string email, byte[] photo, int reliquat, bool isResponsable, int iDEquipe, string iDResponsable)
+        public Employee(string matricule, string nss, string nom, string prenom, string prenom2, string nomArabe, string prenomArabe, string prenom2Arabe, DateTime dateNaissance, string nomJeuneFille, string lieuNaissance, string paysNaissance, string wilayaNaissance, string communeNaissance, string sexe, string titre, string situationFamiliale, string nationalites, string telephone, string mobile, string email, byte[] photo, int reliquat, bool isResponsable, int iDEquipe, string iDResponsable, DateTime dateEntre, DateTime? dateSortie, int nbAnneeExperienceInterne, int nbAnneeExperienceExterne, int? nbEnfant)
         {
             Matricule = matricule;
             NSS = nss;
@@ -69,6 +76,32 @@ namespace PFE_API.Model
             IsResponsable = isResponsable;
             IDEquipe = iDEquipe;
             IDResponsable = iDResponsable;
+            DateEntre = dateEntre;
+            DateSortie = dateSortie;
+            NbAnneeExperienceInterne = nbAnneeExperienceInterne;
+            NbAnneeExperienceExterne = nbAnneeExperienceExterne;
+            NbEnfant = nbEnfant;
+        }
+    }
+
+    [PrimaryKey(nameof(MatriculeEmp), nameof(Type), nameof(Valeur))]
+    public class Contact
+    {
+        [ForeignKey("Employee")]
+        public string MatriculeEmp { get; set; } 
+        public string Type { get; set; }
+        public string Valeur { get; set; }
+
+        public Contact()
+        {
+            
+        }
+
+        public Contact(string matriculeEmp, string type, string valeur)
+        {
+            MatriculeEmp = matriculeEmp;
+            Type = type;
+            Valeur = valeur;
         }
     }
 
