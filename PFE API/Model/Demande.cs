@@ -16,13 +16,16 @@ namespace PFE_API.Model
         public EtatDemande EtatActuel { get; set; }
         [EnumDataType(typeof(TypeDocument))]
         public TypeDocument? TypeDoc { get; set; }
-        public DateTime? DateDebut { get; set; }
-        public DateTime? DateFin { get; set; }
+        public DateOnly? DateDebut { get; set; }
+        public DateOnly? DateFin { get; set; }
+        public TypeConge? TypeConge { get; set; }
+        public DateOnly? JourRecup { get; set; }
+        public bool IsRemuneree { get; set; }
         public string? Commentaire { get; set; }
         public Employee? NouvelleInformation { get; set; }
     
         /// <summary>
-        /// Constructeur pour une demande de congé ou d'absence
+        /// Constructeur pour une demande de congé
         /// </summary>
         /// <param name="matriculeEmp">
         /// Matricule de l'employé qui fait la demande
@@ -39,15 +42,53 @@ namespace PFE_API.Model
         /// <param name="commentaire">
         /// Commentaire de l'employé
         /// </param>
-        public Demande(string matriculeEmp, TypeDemande type, DateTime dateDebut, DateTime dateFin, string commentaire)
+        public Demande(string matriculeEmp, TypeDemande type, DateOnly dateDebut, DateOnly dateFin, string commentaire, TypeConge typeConge) //TODO: Add justification
         {
             MatriculeEmp = matriculeEmp;
             Type = type;
             DateCreation = DateTime.UtcNow;
             EtatActuel = EtatDemande.EnAttente;
-            DateDebut = dateDebut.ToUniversalTime();
+            DateDebut = dateDebut;
             DateFin = dateFin;
             Commentaire = commentaire;
+            TypeConge = typeConge;
+        }
+
+        /// <summary>
+        /// Constructeur pour une demande d'absence avec récupération
+        /// </summary>
+        /// <param name="matriculeEmp">
+        /// Matricule de l'employé qui fait la demande
+        /// </param>
+        /// <param name="type">
+        /// Type de la demande (absence)
+        /// </param>
+        /// <param name="dateDebut">
+        /// Date de début de l'absence
+        /// </param>
+        /// <param name="dateFin">
+        /// Date de fin de l'absence
+        /// </param>
+        /// <param name="commentaire">
+        /// Commentaire de l'employé
+        /// </param>
+        /// <param name="jourRecup">
+        /// Jour de récupération
+        /// </param>
+        public Demande(string matriculeEmp, TypeDemande type, DateOnly dateDebut, DateOnly dateFin, string commentaire, DateOnly? jourRecup, bool isRemeneree) //TODO: Add justification
+        {
+            MatriculeEmp = matriculeEmp;
+            Type = type;
+            DateCreation = DateTime.UtcNow;
+            EtatActuel = EtatDemande.EnAttente;
+            DateDebut = dateDebut;
+            DateFin = dateFin;
+            Commentaire = commentaire;
+            IsRemuneree = isRemeneree;
+            if (isRemeneree)
+            {
+                JourRecup = jourRecup;
+            }
         }
 
         /// <summary>
@@ -91,6 +132,21 @@ namespace PFE_API.Model
             DateCreation = DateTime.UtcNow;
         }
 
+    }
+
+    public enum TypeConge
+    {
+        Annuel,
+        Exceptionnel,
+        Maladie,
+        SansSolde,
+        Reliquat,
+        //Maternite,
+        //Paternite,
+        //Mariage,
+        //Deuil,
+        //Naissance,
+        //Autre
     }
 
     public enum TypeDemande

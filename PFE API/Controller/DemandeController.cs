@@ -21,7 +21,8 @@ namespace PFE_API.Controller
         }
 
         [HttpPost("Insert")]
-        public IActionResult InsertDemande(string matEmp, TypeDemande type, DateTime? dateDebut, DateTime? dateFin, string? commentaire, TypeDocument? typeDocument)
+        public IActionResult InsertDemande(string matEmp, TypeDemande type, DateOnly? dateDebut, DateOnly? dateFin, string? commentaire, TypeDocument? typeDocument, 
+            TypeConge? typeConge, bool? isRemeneree, DateOnly? JourRecup)
         {
             var demande = new Demande()
             {
@@ -32,14 +33,17 @@ namespace PFE_API.Controller
             switch (type)
             {
                 case TypeDemande.Conge:
-                    demande.DateDebut = dateDebut?.ToUniversalTime();
-                    demande.DateFin = dateFin?.ToUniversalTime();
+                    demande.DateDebut = dateDebut;
+                    demande.DateFin = dateFin;
                     demande.Commentaire = commentaire;
+                    demande.TypeConge = typeConge;
                     break;
                 case TypeDemande.Absence:
-                    demande.DateDebut = dateDebut?.ToUniversalTime();
-                    demande.DateFin = dateFin?.ToUniversalTime();
+                    demande.DateDebut = dateDebut;
+                    demande.DateFin = dateFin;
                     demande.Commentaire = commentaire;
+                    demande.JourRecup = JourRecup;
+                    demande.IsRemuneree = isRemeneree ?? false;
                     break;
                 case TypeDemande.Document:
                     demande.TypeDoc = typeDocument;
@@ -69,5 +73,43 @@ namespace PFE_API.Controller
             DemandeDbController.Update(demande);
             return Ok();
         }
+
+        [HttpGet("GetTypeDocuments")]
+        public IActionResult GetTypeDocuments()
+        {
+            List<dynamic> list = new List<dynamic>();
+            foreach (TypeDocument type in Enum.GetValues(typeof(TypeDocument)))
+            {
+                list.Add(new { id = (int)type, name = type.ToString() });
+            }
+
+            return Ok(list);
+        }
+
+        [HttpGet("GetTypeConges")]
+        public IActionResult GetTypeConges()
+        {
+            List<dynamic> list = new List<dynamic>();
+            foreach (TypeConge type in Enum.GetValues(typeof(TypeConge)))
+            {
+                list.Add(new { id = (int)type, name = type.ToString() });
+            }
+
+            return Ok(list);
+        }
+
+        [HttpGet("GetTypeDemandes")]
+        public IActionResult GetTypeDemandes()
+        {
+            List<dynamic> list = [];
+            foreach (TypeDemande type in Enum.GetValues(typeof(TypeDemande)))
+            {
+                list.Add(new { id = (int)type, name = type.ToString() });
+            }
+
+            return Ok(list);
+        }
+
+
     }
 }

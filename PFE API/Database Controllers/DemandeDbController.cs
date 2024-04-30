@@ -99,7 +99,7 @@ namespace PFE_API
                 case TypeDemande.Document:
                     return GetDemandesDocument();
                 default:   
-                    return null;
+                    throw new Exception("Type de demande inconnu");
             }
         }
 

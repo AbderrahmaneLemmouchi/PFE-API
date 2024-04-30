@@ -13,35 +13,29 @@ namespace PFE_API
         /// <returns>True if the employee exists</returns>
         public static bool InsertContrat(ContratRT contratRT)
         {
-            using (var db = new DBcontext())
+            using var db = new DBcontext();
+            var emp = db.Employees.Find(contratRT.MatriculeEmp);
+            if (emp == null)
             {
-                var emp = db.Employees.Find(contratRT.MatriculeEmp);
-                if (emp == null)
-                {
-                    return false;
-                }
-                db.ContratsRT.Add(contratRT);
-                db.SaveChanges();
+                return false;
             }
+            db.ContratsRT.Add(contratRT);
+            db.SaveChanges();
             return true;
         }
 
         public static void DeleteContrat(ContratRT contratRT)
         {
-            using (var db = new DBcontext())
-            {
-                db.ContratsRT.Remove(contratRT);
-                db.SaveChanges();
-            }
+            using var db = new DBcontext();
+            db.ContratsRT.Remove(contratRT);
+            db.SaveChanges();
         }
 
         public static void UpdateContrat(ContratRT contratRT)
         {
-            using (var db = new DBcontext())
-            {
-                db.ContratsRT.Update(contratRT);
-                db.SaveChanges();
-            }
+            using var db = new DBcontext();
+            db.ContratsRT.Update(contratRT);
+            db.SaveChanges();
         }
 
         public static IEnumerable<ContratRT> GetContratsRT()
