@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PFE_API;
@@ -11,9 +12,11 @@ using PFE_API;
 namespace PFE_API.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    partial class DBcontextModelSnapshot : ModelSnapshot
+    [Migration("20240423145431_UpdateEmp")]
+    partial class UpdateEmp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,32 +24,6 @@ namespace PFE_API.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("PFE_API.Model.Conge", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
-
-                    b.Property<DateOnly>("DateDebut")
-                        .HasColumnType("date");
-
-                    b.Property<DateOnly>("DateFin")
-                        .HasColumnType("date");
-
-                    b.Property<int>("IDExercice")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("MatriculeEmp")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Conges");
-                });
 
             modelBuilder.Entity("PFE_API.Model.Contact", b =>
                 {
@@ -287,28 +264,6 @@ namespace PFE_API.Migrations
                     b.HasKey("IDEquipe");
 
                     b.ToTable("Equipes");
-                });
-
-            modelBuilder.Entity("PFE_API.Model.Exercice", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
-
-                    b.Property<int>("Annee")
-                        .HasColumnType("integer");
-
-                    b.Property<DateOnly>("DateDebut")
-                        .HasColumnType("date");
-
-                    b.Property<DateOnly>("DateFin")
-                        .HasColumnType("date");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Exercices");
                 });
 
             modelBuilder.Entity("PFE_API.Model.Historique", b =>

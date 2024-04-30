@@ -15,7 +15,7 @@ namespace PFE_API.Model
         public string NomArabe { get; set; }
         public string PrenomArabe { get; set; }
         public string? Prenom2Arabe { get; set; }
-        public DateTime DateNaissance { get; set; }
+        public DateOnly DateNaissance { get; set; }
         public string? NomJeuneFille { get; set; }
         public string? NomJeuneFilleArabe { get; set; }
         public string LieuNaissance { get; set; }
@@ -36,8 +36,8 @@ namespace PFE_API.Model
         public int IDEquipe { get; set; }
         [ForeignKey("Employee")]
         public string? IDResponsable { get; set; }
-        public DateTime DateEntre { get; set; }
-        public DateTime? DateSortie { get; set; }
+        public DateOnly DateEntre { get; set; }
+        public DateOnly? DateSortie { get; set; }
         public int NbAnneeExperienceInterne { get; set; }
         public int NbAnneeExperienceExterne { get; set; }
         public int? NbEnfant { get; set; }
@@ -48,7 +48,7 @@ namespace PFE_API.Model
             // Initialize properties with default values if needed
         }
 
-        public Employee(string matricule, string nss, string nom, string prenom, string prenom2, string nomArabe, string prenomArabe, string prenom2Arabe, DateTime dateNaissance, string nomJeuneFille, string lieuNaissance, string paysNaissance, string wilayaNaissance, string communeNaissance, string sexe, string titre, string situationFamiliale, string nationalites, string telephone, string mobile, string email, byte[] photo, int reliquat, bool isResponsable, int iDEquipe, string iDResponsable, DateTime dateEntre, DateTime? dateSortie, int nbAnneeExperienceInterne, int nbAnneeExperienceExterne, int? nbEnfant)
+        public Employee(string matricule, string nss, string nom, string prenom, string prenom2, string nomArabe, string prenomArabe, string prenom2Arabe, DateOnly dateNaissance, string nomJeuneFille, string lieuNaissance, string paysNaissance, string wilayaNaissance, string communeNaissance, string sexe, string titre, string situationFamiliale, string nationalites, string telephone, string mobile, string email, byte[] photo, int reliquat, bool isResponsable, int iDEquipe, string iDResponsable, DateOnly dateEntre, DateOnly? dateSortie, int nbAnneeExperienceInterne, int nbAnneeExperienceExterne, int? nbEnfant)
         {
             Matricule = matricule;
             NSS = nss;
@@ -58,7 +58,7 @@ namespace PFE_API.Model
             NomArabe = nomArabe;
             PrenomArabe = prenomArabe;
             Prenom2Arabe = prenom2Arabe;
-            DateNaissance = dateNaissance.ToUniversalTime();
+            DateNaissance = dateNaissance;
             NomJeuneFille = nomJeuneFille;
             LieuNaissance = lieuNaissance;
             PaysNaissance = paysNaissance;

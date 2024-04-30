@@ -1,4 +1,5 @@
 ﻿using PFE_API.Model;
+using System.Reflection.Metadata.Ecma335;
 
 namespace PFE_API
 {
@@ -75,5 +76,46 @@ namespace PFE_API
             }
             return employees;
         }
+    }
+
+    public class ContactDbController
+    {
+        public static void Insert(Contact contact)
+        {
+            using var db = new DBcontext();
+            var employee = EmployeeDbController.GetEmployeeById(contact.MatriculeEmp) ?? throw new Exception("Employee not found");
+            db.Contacts.Add(contact);
+            db.SaveChanges();
+        }
+
+        public static bool Delete(string mat, string type, string valeur)
+        {
+            using var db = new DBcontext();
+            var contact = db.Contacts.Find(mat, type, valeur);
+            if (contact == null)
+            {
+                return false;
+            }
+            db.Contacts.Remove(contact);
+            db.SaveChanges();
+            return true;
+        }
+
+        public static Contact GetContact(string mat, string type, string valeur)
+        {
+            using var db = new DBcontext();
+            var contact = db.Contacts.Find(mat, type, valeur);
+            return contact;
+        }
+
+        public static IEnumerable<Contact> GetContactsByEmployee(string mat)
+        {
+            using var db = new DBcontext();
+            var contacts = db.Contacts.Where(c => c.MatriculeEmp == mat).ToList();
+            return contacts;
+        }
+
+        
+
     }
 }
