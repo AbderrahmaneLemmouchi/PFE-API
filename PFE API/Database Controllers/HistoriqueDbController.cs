@@ -44,5 +44,12 @@ namespace PFE_API
             var historique = db.Historiques.Find(id);
             return historique;
         }
+
+        public static IEnumerable<Historique> GetHistoriqueDemande(int idDemande)
+        {
+            var db = new DBcontext();
+            var historiques = db.Historiques.Where(h => h.IDDemande == idDemande).ToList();
+            return historiques;
+        }
     }
 }

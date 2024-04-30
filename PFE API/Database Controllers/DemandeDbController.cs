@@ -4,48 +4,37 @@ namespace PFE_API
 {
     public class DemandeDbController
     {
-        public static bool Insert(Demande demande)
+        public static void Insert(Demande demande)
         {
-            using (var db = new DBcontext())
-            {
-                var emp = db.Employees.Find(demande.MatriculeEmp);
-                if (emp == null)
-                {
-                    return false;
-                }
-                db.Demandes.Add(demande);
-                db.SaveChanges();
-            }
-            return true;
+            using var db = new DBcontext();
+            _ = db.Employees.Find(demande.MatriculeEmp) ?? throw new Exception("Employee not found");
+            db.Demandes.Add(demande);
+            db.SaveChanges();
         }
 
         public static void Delete(Demande demande)
         {
-            using (var db = new DBcontext())
-            {
-                db.Demandes.Remove(demande);
-                db.SaveChanges();
-            }
+            using var db = new DBcontext();
+            db.Demandes.Remove(demande);
+            db.SaveChanges();
         }
 
         public static void Update(Demande demande)
         {
-            using (var db = new DBcontext())
+            using var db = new DBcontext();
+            var temp = GetDemandeById(demande.ID);
+            Historique historique = new()
             {
-                var temp = GetDemandeById(demande.ID);
-                Historique historique = new Historique
-                {
-                    IDDemande = demande.ID,
-                    FromEtat = temp.EtatActuel,
-                    ToEtat = demande.EtatActuel,
-                    Date = DateTime.Now, //maybe the problem is UTC
-                    Par = demande.MatriculeEmp
-                    //TODO: Add the matricule of the employee who made the change
-                };
-                HistoriqueDbController.Insert(historique);
-                db.Demandes.Update(demande);
-                db.SaveChanges();
-            }
+                IDDemande = demande.ID,
+                FromEtat = temp.EtatActuel,
+                ToEtat = demande.EtatActuel,
+                Date = DateTime.UtcNow,
+                Par = demande.MatriculeEmp
+                //TODO: Add the matricule of the employee who made the change
+            };
+            HistoriqueDbController.Insert(historique);
+            db.Demandes.Update(demande);
+            db.SaveChanges();
         }
 
         public static IEnumerable<Demande> GetDemandes()
@@ -95,6 +84,23 @@ namespace PFE_API
             var db = new DBcontext();
             var demandes = db.Demandes.Where(d => d.Type == TypeDemande.ChangementInfo).ToList();
             return demandes;
+        }
+
+        public static IEnumerable<Demande> GetDemandesByType(TypeDemande type)
+        {
+            switch (type)
+            {
+                case TypeDemande.Conge:
+                    return GetDemandesConge();
+                case TypeDemande.Absence:
+                    return GetDemandesAbsence();
+                case TypeDemande.ChangementInfo:
+                    return GetDemandesChangementInfo();
+                case TypeDemande.Document:
+                    return GetDemandesDocument();
+                default:   
+                    return null;
+            }
         }
 
         public static IEnumerable<Demande> GetDemandesEnAttente()

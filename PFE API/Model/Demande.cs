@@ -88,7 +88,7 @@ namespace PFE_API.Model
 
         public Demande()
         {
-            
+            DateCreation = DateTime.UtcNow;
         }
 
     }
