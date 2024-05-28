@@ -13,6 +13,8 @@ namespace PFE_API
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Conge> Conges { get; set; }
         public DbSet<Exercice> Exercices { get; set; }
+        public DbSet<User> Users { get; set; }
+
         // Add other DbSets for your other models...
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

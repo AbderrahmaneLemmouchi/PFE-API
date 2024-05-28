@@ -22,14 +22,11 @@ namespace PFE_API.Model
         public string PaysNaissance { get; set; }
         public string WilayaNaissance { get; set; }
         public string CommuneNaissance { get; set; }
-        public string Sexe { get; set; }
-        public string Titre { get; set; }
-        public string SituationFamiliale { get; set; }
+        public TypeSexe Sexe { get; set; }
+        public TypeTitre Titre { get; set; }
+        public TypeSituationFamiliale SituationFamiliale { get; set; }
         public string Nationalites { get; set; }
-        public string Telephone { get; set; }
-        public string? Mobile { get; set; }
-        public string Email { get; set; }
-        public byte[] Photo { get; set; }
+        public string LinkToPhoto { get; set; }
         public int Reliquat { get; set; }
         public bool IsResponsable { get; set; }
         [ForeignKey("Equipe")]
@@ -48,7 +45,7 @@ namespace PFE_API.Model
             // Initialize properties with default values if needed
         }
 
-        public Employee(string matricule, string nss, string nom, string prenom, string prenom2, string nomArabe, string prenomArabe, string prenom2Arabe, DateOnly dateNaissance, string nomJeuneFille, string lieuNaissance, string paysNaissance, string wilayaNaissance, string communeNaissance, string sexe, string titre, string situationFamiliale, string nationalites, string telephone, string mobile, string email, byte[] photo, int reliquat, bool isResponsable, int iDEquipe, string iDResponsable, DateOnly dateEntre, DateOnly? dateSortie, int nbAnneeExperienceInterne, int nbAnneeExperienceExterne, int? nbEnfant)
+        public Employee(string matricule, string nss, string nom, string prenom, string prenom2, string nomArabe, string prenomArabe, string prenom2Arabe, DateOnly dateNaissance, string nomJeuneFille, string lieuNaissance, string paysNaissance, string wilayaNaissance, string communeNaissance, TypeSexe sexe, TypeTitre titre, TypeSituationFamiliale situationFamiliale, string nationalites, string photo, int reliquat, bool isResponsable, int iDEquipe, string iDResponsable, DateOnly dateEntre, DateOnly? dateSortie, int nbAnneeExperienceInterne, int nbAnneeExperienceExterne, int? nbEnfant)
         {
             Matricule = matricule;
             NSS = nss;
@@ -68,10 +65,7 @@ namespace PFE_API.Model
             Titre = titre;
             SituationFamiliale = situationFamiliale;
             Nationalites = nationalites;
-            Telephone = telephone;
-            Mobile = mobile;
-            Email = email;
-            Photo = photo;
+            LinkToPhoto = photo;
             Reliquat = reliquat;
             IsResponsable = isResponsable;
             IDEquipe = iDEquipe;
@@ -82,6 +76,31 @@ namespace PFE_API.Model
             NbAnneeExperienceExterne = nbAnneeExperienceExterne;
             NbEnfant = nbEnfant;
         }
+    }
+
+    public enum TypeTitre
+    {
+        Mr,
+        Mme,
+        Mlle,
+        Me,
+        Dr,
+        Pr
+    }
+
+    public enum TypeSexe
+    {
+        M,
+        F, 
+        NonSpecifie
+    }
+
+    public enum TypeSituationFamiliale
+    {
+        Célibataire,
+        Marié,
+        Divorcé,
+        Veuf
     }
 
     [PrimaryKey(nameof(MatriculeEmp), nameof(Type), nameof(Valeur))]

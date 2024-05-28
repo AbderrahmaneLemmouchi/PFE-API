@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PFE_API.Model;
 
@@ -7,6 +8,7 @@ namespace PFE_API.Controllers
     [Route("[controller]")]
     public class EmployeeController : ControllerBase
     {
+        [Authorize]//(Roles = "RH,Resposable")]
         [HttpGet("GetEmployees")]
         public IActionResult GetEmployees()
         {
@@ -30,13 +32,10 @@ namespace PFE_API.Controllers
                 string paysNaissance,
                 string wilayaNaissance,
                 string communeNaissance,
-                string sexe,
-                string titre,
-                string situationFamiliale,
+                TypeSexe sexe,
+                TypeTitre titre,
+                TypeSituationFamiliale situationFamiliale,
                 string nationalites,
-                string telephone,
-                string? mobile,
-                string email,
                 int reliquat,
                 bool isResponsable,
                 int idEquipe,
@@ -69,10 +68,7 @@ namespace PFE_API.Controllers
                 Titre = titre,
                 SituationFamiliale = situationFamiliale,
                 Nationalites = nationalites,
-                Telephone = telephone,
-                Mobile = mobile,
-                Email = email,
-                Photo = new byte[] { /* photo byte array */ },
+                LinkToPhoto = "",
                 Reliquat = reliquat,
                 IsResponsable = isResponsable,
                 IDEquipe = idEquipe,

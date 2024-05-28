@@ -12,8 +12,8 @@ using PFE_API;
 namespace PFE_API.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20240423141746_addContact")]
-    partial class addContact
+    [Migration("20240509110829_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,32 @@ namespace PFE_API.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("PFE_API.Model.Conge", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
+
+                    b.Property<DateOnly>("DateDebut")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly>("DateFin")
+                        .HasColumnType("date");
+
+                    b.Property<int>("IDExercice")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("MatriculeEmp")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Conges");
+                });
 
             modelBuilder.Entity("PFE_API.Model.Contact", b =>
                 {
@@ -93,14 +119,20 @@ namespace PFE_API.Migrations
                     b.Property<DateTime>("DateCreation")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("DateDebut")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly?>("DateDebut")
+                        .HasColumnType("date");
 
-                    b.Property<DateTime?>("DateFin")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly?>("DateFin")
+                        .HasColumnType("date");
 
                     b.Property<int>("EtatActuel")
                         .HasColumnType("integer");
+
+                    b.Property<bool>("IsRemuneree")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateOnly?>("JourRecup")
+                        .HasColumnType("date");
 
                     b.Property<string>("MatriculeEmp")
                         .IsRequired()
@@ -110,6 +142,9 @@ namespace PFE_API.Migrations
                         .HasColumnType("text");
 
                     b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("TypeConge")
                         .HasColumnType("integer");
 
                     b.Property<int?>("TypeDoc")
@@ -131,18 +166,14 @@ namespace PFE_API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("DateEntre")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("DateEntre")
+                        .HasColumnType("date");
 
-                    b.Property<DateTime>("DateNaissance")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("DateNaissance")
+                        .HasColumnType("date");
 
-                    b.Property<DateTime?>("DateSortie")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<DateOnly?>("DateSortie")
+                        .HasColumnType("date");
 
                     b.Property<int>("IDEquipe")
                         .HasColumnType("integer");
@@ -157,7 +188,8 @@ namespace PFE_API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Mobile")
+                    b.Property<string>("LinkToPhoto")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("NSS")
@@ -195,10 +227,6 @@ namespace PFE_API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<byte[]>("Photo")
-                        .IsRequired()
-                        .HasColumnType("bytea");
-
                     b.Property<string>("Prenom")
                         .IsRequired()
                         .HasColumnType("text");
@@ -216,21 +244,14 @@ namespace PFE_API.Migrations
                     b.Property<int>("Reliquat")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Sexe")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Sexe")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("SituationFamiliale")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("SituationFamiliale")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("Telephone")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Titre")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Titre")
+                        .HasColumnType("integer");
 
                     b.Property<string>("WilayaNaissance")
                         .IsRequired()
@@ -264,6 +285,28 @@ namespace PFE_API.Migrations
                     b.HasKey("IDEquipe");
 
                     b.ToTable("Equipes");
+                });
+
+            modelBuilder.Entity("PFE_API.Model.Exercice", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
+
+                    b.Property<int>("Annee")
+                        .HasColumnType("integer");
+
+                    b.Property<DateOnly>("DateDebut")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly>("DateFin")
+                        .HasColumnType("date");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Exercices");
                 });
 
             modelBuilder.Entity("PFE_API.Model.Historique", b =>

@@ -1,5 +1,4 @@
 ﻿using PFE_API.Model;
-using System.Reflection.Metadata.Ecma335;
 
 namespace PFE_API
 {
@@ -76,6 +75,14 @@ namespace PFE_API
             }
             return employees;
         }
+
+        public static bool IsPresent(string mat, DateOnly date)
+        {
+            using var db = new DBcontext();
+            var Demandes =  DemandeDbController.GetDemandesByEmployee(mat).Where(d=> d.DateDebut >= date && (d.Type == TypeDemande.Conge || d.Type == TypeDemande.Absence) && d.EtatActuel == EtatDemande.Acceptee);
+            return Demandes.Any();
+        }
+
     }
 
     public class ContactDbController
@@ -114,8 +121,6 @@ namespace PFE_API
             var contacts = db.Contacts.Where(c => c.MatriculeEmp == mat).ToList();
             return contacts;
         }
-
         
-
     }
 }

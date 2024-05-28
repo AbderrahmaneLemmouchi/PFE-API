@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using PFE_API.Model;
 
@@ -21,12 +22,17 @@ namespace PFE_API.Controller
         }
 
         [HttpPost("Insert")]
-        public IActionResult InsertDemande(string matEmp, TypeDemande type, DateOnly? dateDebut, DateOnly? dateFin, string? commentaire, TypeDocument? typeDocument, 
+        [Authorize]
+        public IActionResult InsertDemande(TypeDemande type, DateOnly? dateDebut, DateOnly? dateFin, string? commentaire, TypeDocument? typeDocument, 
             TypeConge? typeConge, bool? isRemeneree, DateOnly? JourRecup)
         {
+
+            //get the user's matricule
+            var matricule = User.Claims.FirstOrDefault(c => c.Type == "Matricule")?.Value;
+
             var demande = new Demande()
             {
-                MatriculeEmp = matEmp,
+                MatriculeEmp = matricule,
                 Type = type,
                 DateCreation = DateTime.UtcNow,
             };
