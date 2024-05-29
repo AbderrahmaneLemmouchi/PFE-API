@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PFE_API.Database_Controllers;
 using PFE_API.Model;
 using System.Security.Claims;
 
@@ -47,7 +48,9 @@ namespace PFE_API.Controllers
                 int nbAnneeExperienceInterne,
                 int nbAnneeExperienceExterne,
                 int? nbEnfant,
-                string email
+                string email,
+                string password,
+                string role
             )
         {
             var employee = new Employee
@@ -84,7 +87,11 @@ namespace PFE_API.Controllers
                 Email = email
             };
 
+            var user = new User(email, password, role);
+
+
             EmployeeDbController.Insert(employee);
+            LoginDbController.Register(user);
             return Ok();
         }
 
