@@ -44,6 +44,17 @@ namespace PFE_API
             return employees;
         }
 
+        public static string? GetMatricule(string email)
+        {
+            using var db = new DBcontext();
+            var employees = db.Employees.Where(e => e.Email == email).ToList();
+            if (employees.Count == 0)
+            {
+                return null;
+            }
+            return employees[0].Matricule;
+        }
+
         public static Employee GetEmployeeById(string matricule)
         {
             var db = new DBcontext();
@@ -83,6 +94,16 @@ namespace PFE_API
             return Demandes.Any();
         }
 
+        internal static Employee GetEmployeeByEmail(string? email)
+        {
+            using var db = new DBcontext();
+            var employees = db.Employees.Where(e => e.Email == email).ToList();
+            if (employees.Count == 0)
+            {
+                return null;
+            }
+            return employees[0];
+        }
     }
 
     public class ContactDbController

@@ -9,6 +9,7 @@ namespace PFE_API.Model
         public string Email { get; set; }
         public string Password { get; set; }
         public string Role { get; set; }
+        public string Matricule { get; set; }
 
         public User() { }
         public User(string email, string password)
@@ -16,13 +17,23 @@ namespace PFE_API.Model
             Email = email;
             Password = password;
             Role = "User";
+            Matricule = "555";
         }
 
         public User(string email, string password, string role)
         {
+            var mat = EmployeeDbController.GetMatricule(email);
+            if (mat == null)
+            {
+                //don't create a user without a matricule
+                throw new System.Exception("User's email must be in the employees database");
+            }
+
             Email = email;
             Password = password;
             Role = role;
+            Matricule = mat;
+            
         }
     }
 }

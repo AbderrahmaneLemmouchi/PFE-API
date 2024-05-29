@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PFE_API.Model;
+using System.Security.Claims;
 
 namespace PFE_API.Controllers
 {
@@ -8,7 +9,7 @@ namespace PFE_API.Controllers
     [Route("[controller]")]
     public class EmployeeController : ControllerBase
     {
-        [Authorize]//(Roles = "RH,Resposable")]
+        [Authorize(Roles = "RH")]//(Roles = "RH,Resposable")]
         [HttpGet("GetEmployees")]
         public IActionResult GetEmployees()
         {
@@ -16,6 +17,7 @@ namespace PFE_API.Controllers
         }
 
         [HttpPost]
+        //[Authorize(Roles = "RH")]
         public IActionResult InsertEmployee(
                 string matricule,
                 string nss,
@@ -25,7 +27,7 @@ namespace PFE_API.Controllers
                 string nomArabe,
                 string prenomArabe,
                 string? prenom2Arabe,
-                DateOnly dateNaissance,
+                DateTime dateNaissance,
                 string? nomJeuneFille,
                 string? nomJeuneFilleArabe,
                 string lieuNaissance,
@@ -40,11 +42,12 @@ namespace PFE_API.Controllers
                 bool isResponsable,
                 int idEquipe,
                 string? idResponsable,
-                DateOnly dateEntre,
-                DateOnly? dateSortie,
+                DateTime dateEntre,
+                //DateTime? dateSortie,
                 int nbAnneeExperienceInterne,
                 int nbAnneeExperienceExterne,
-                int? nbEnfant
+                int? nbEnfant,
+                string email
             )
         {
             var employee = new Employee
@@ -57,7 +60,7 @@ namespace PFE_API.Controllers
                 NomArabe = nomArabe,
                 PrenomArabe = prenomArabe,
                 Prenom2Arabe = prenom2Arabe,
-                DateNaissance = dateNaissance,
+                DateNaissance = DateOnly.FromDateTime(dateNaissance),
                 NomJeuneFille = nomJeuneFille,
                 NomJeuneFilleArabe = nomJeuneFilleArabe,
                 LieuNaissance = lieuNaissance,
@@ -73,21 +76,24 @@ namespace PFE_API.Controllers
                 IsResponsable = isResponsable,
                 IDEquipe = idEquipe,
                 IDResponsable = idResponsable,
-                DateEntre = dateEntre,
-                DateSortie = dateSortie,
+                DateEntre = DateOnly.FromDateTime(dateEntre),
+                //DateSortie = DateOnly.FromDateTime(dateSortie),
                 NbAnneeExperienceInterne = nbAnneeExperienceInterne,
                 NbAnneeExperienceExterne = nbAnneeExperienceExterne,
-                NbEnfant = nbEnfant
+                NbEnfant = nbEnfant,
+                Email = email
             };
 
             EmployeeDbController.Insert(employee);
             return Ok();
         }
 
-        [HttpGet("GetByID")]
-        public IActionResult GetByID(string id)
+        [Authorize]
+        [HttpPost("GetMe")]
+        public IActionResult GetByEmail()
         {
-            return Ok(EmployeeDbController.GetEmployeeById(id));
+            var email = User.Claims.Where(c => c.Type == ClaimTypes.Email).Select(c => c.Value).FirstOrDefault();
+            return Ok(EmployeeDbController.GetEmployeeByEmail(email));
         }
 
         [HttpDelete]
@@ -100,7 +106,32 @@ namespace PFE_API.Controllers
             return NotFound();
         }
 
+        [HttpGet("GetSexe")]
+        public IActionResult GetSexe()
+        {
+            return Ok(Enum.GetValues(typeof(TypeSexe)).Cast<TypeSexe>().Select(v => new { id = (int)v, name = v.ToString() }));
+        }
 
+        [HttpGet("GetTitre")]
+        public IActionResult GetTitre()
+        {
+            return Ok(Enum.GetValues(typeof(TypeTitre)).Cast<TypeTitre>().Select(v => new { id = (int)v, name = v.ToString() }));
+        }
+
+        [HttpGet("GetSituationFamiliale")]
+        public IActionResult GetSituationFamiliale()
+        {
+            return Ok(Enum.GetValues(typeof(TypeSituationFamiliale)).Cast<TypeSituationFamiliale>().Select(v => new { id = (int)v, name = v.ToString() }));
+        }
+
+        [Authorize()]
+        [HttpGet("Test")]
+        public IActionResult Test()
+        {
+            var email = User.Claims.Where(c => c.Type == ClaimTypes.Email).Select(c => new { c.Value}).FirstOrDefault();
+            var roleClaims = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            return Ok(roleClaims);
+        }
     }
 
     [ApiController]

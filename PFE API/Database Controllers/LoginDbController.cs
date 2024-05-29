@@ -1,24 +1,28 @@
 ﻿using PFE_API.Model;
 using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace PFE_API.Database_Controllers
 {
     public class LoginDbController
     {
+
+
         public static bool FindEmail(string email)
         {
             using var db = new DBcontext();
-            var user = db.Users.Where(u => u.Email.Equals(email, StringComparison.CurrentCultureIgnoreCase));
+            var users = db.Users.AsEnumerable();
+            var user = users.Where(u => u.Email.Equals(email, StringComparison.CurrentCultureIgnoreCase));
+
             return !user.Any();
         }
 
         public static bool Login(string email, string password)
         {
-            using var db = new DBcontext();
-            var user = db.Users.Where(u => u.Email.Equals(email, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-            //var user = db.Users.Find(email);
+            using var db = new DBcontext(); 
+            var users = db.Users.AsEnumerable();
+            var user = users.Where(u => u.Email.Equals(email, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+
             if (user == null)
             {
                 return false;
@@ -39,7 +43,13 @@ namespace PFE_API.Database_Controllers
             db.SaveChanges();
         }
 
-
+        internal static User GetUser(string email)
+        {
+            using var db = new DBcontext();
+            var users = db.Users.AsEnumerable();
+            var user = users.Where(u => u.Email.Equals(email, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            return user;
+        }
 
         private static string ConvertToHash(string input, HashAlgorithm algorithm)
         {
