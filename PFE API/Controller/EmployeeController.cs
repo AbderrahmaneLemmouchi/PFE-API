@@ -126,16 +126,6 @@ namespace PFE_API.Controllers
             return Ok(EmployeeDbController.GetScore(mat));
         }
 
-
-        [HttpGet("GetEmployeeById")]
-        public IActionResult GetEmployeeById(string mat)
-        {
-
-            return Ok(EmployeeDbController.GetEmployeeById(mat));
-        }
-
-
-
         [HttpPost("UpdateEmployeeScore")]
         public IActionResult UpdateEmployeeScore(string mat, int score)
         {

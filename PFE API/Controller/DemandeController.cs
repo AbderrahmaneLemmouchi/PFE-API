@@ -13,7 +13,7 @@ namespace PFE_API.Controller
         [HttpGet("GetDemandesByEmp")]
         public IActionResult GetDemandesByEmp(string Emp)
         {
-            return Ok(DemandeDbController.GetDemandesByEmployee(Emp));
+            return Ok(DemandeDbController.GetDemandes());
         }
 
         [HttpGet("GetDemandesByType")]
