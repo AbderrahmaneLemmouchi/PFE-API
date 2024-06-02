@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PFE_API.Database_Controllers;
+using PFE_API.DTO;
 using PFE_API.Model;
 using System.Security.Claims;
 
@@ -104,7 +105,9 @@ namespace PFE_API.Controllers
         public IActionResult GetByEmail()
         {
             var email = User.Claims.Where(c => c.Type == ClaimTypes.Email).Select(c => c.Value).FirstOrDefault();
-            return Ok(EmployeeDbController.GetEmployeeByEmail(email));
+            var employee = EmployeeDbController.GetEmployeeByEmail(email);
+            var result = EmployeeDTO.FromEmployee(employee);
+            return Ok(result);
         }
 
         [HttpDelete]
@@ -172,7 +175,7 @@ namespace PFE_API.Controllers
         [HttpGet("Test")]
         public IActionResult Test()
         {
-            var email = User.Claims.Where(c => c.Type == ClaimTypes.Email).Select(c => new { c.Value}).FirstOrDefault();
+            var email = User.Claims.Where(c => c.Type == ClaimTypes.Email).Select(c => new { c.Value }).FirstOrDefault();
             var roleClaims = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
             return Ok(roleClaims);
         }
