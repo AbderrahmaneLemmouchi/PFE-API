@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using PFE_API.Model;
+using System.Security.Claims;
 
 namespace PFE_API.Controller
 {
@@ -23,18 +24,21 @@ namespace PFE_API.Controller
 
         [HttpPost("Insert")]
         [Authorize]
-        public IActionResult InsertDemande(TypeDemande type, DateOnly? dateDebut, DateOnly? dateFin, string? commentaire, TypeDocument? typeDocument, 
-            TypeConge? typeConge, bool? isRemeneree, DateOnly? JourRecup)
+        public IActionResult InsertDemande(TypeDemande type, DateOnly? dateDebut, DateOnly? dateFin, string? commentaire, TypeDocument? typeDocument,
+            TypeConge? typeConge, bool? isRemeneree, DateOnly? JourRecup, TypeImportance importance)
         {
 
             //get the user's matricule
-            var matricule = User.Claims.FirstOrDefault(c => c.Type == "Matricule")?.Value;
+            var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var matricule = EmployeeDbController.GetEmployeeByEmail(email).Matricule;
 
             var demande = new Demande()
             {
                 MatriculeEmp = matricule,
                 Type = type,
                 DateCreation = DateTime.UtcNow,
+                EtatActuel = EtatDemande.EnAttente,
+                Importance = importance
             };
             switch (type)
             {
@@ -49,7 +53,7 @@ namespace PFE_API.Controller
                     demande.DateFin = dateFin;
                     demande.Commentaire = commentaire;
                     demande.JourRecup = JourRecup;
-                    demande.IsRemuneree = isRemeneree ?? false;
+                    demande.IsRemuneree = isRemeneree;
                     break;
                 case TypeDemande.Document:
                     demande.TypeDoc = typeDocument;
@@ -61,8 +65,8 @@ namespace PFE_API.Controller
             }
             try
             {
-            DemandeDbController.Insert(demande);
-            return Ok();
+                DemandeDbController.Insert(demande);
+                return Ok();
 
             }
             catch (Exception e)
@@ -71,19 +75,23 @@ namespace PFE_API.Controller
             }
         }
 
+        [Authorize]
         [HttpPut]
         public IActionResult UpdateEtat(int id, EtatDemande newEtat)
         {
             var demande = DemandeDbController.GetDemandeById(id);
             demande.EtatActuel = newEtat;
-            DemandeDbController.Update(demande);
+
+            var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var matricule = EmployeeDbController.GetEmployeeByEmail(email).Matricule;
+            DemandeDbController.Update(demande, matricule);
             return Ok();
         }
 
         [HttpGet("GetTypeDocuments")]
         public IActionResult GetTypeDocuments()
         {
-            List<dynamic> list = new List<dynamic>();
+            List<dynamic> list = [];
             foreach (TypeDocument type in Enum.GetValues(typeof(TypeDocument)))
             {
                 list.Add(new { id = (int)type, name = type.ToString() });
@@ -95,7 +103,7 @@ namespace PFE_API.Controller
         [HttpGet("GetTypeConges")]
         public IActionResult GetTypeConges()
         {
-            List<dynamic> list = new List<dynamic>();
+            List<dynamic> list = [];
             foreach (TypeConge type in Enum.GetValues(typeof(TypeConge)))
             {
                 list.Add(new { id = (int)type, name = type.ToString() });
@@ -116,6 +124,17 @@ namespace PFE_API.Controller
             return Ok(list);
         }
 
+        [HttpGet("GetTypeImportances")]
+        public IActionResult GetTypeImportances()
+        {
+            List<dynamic> list = [];
+            foreach (TypeImportance type in Enum.GetValues(typeof(TypeImportance)))
+            {
+                list.Add(new { id = (int)type, name = type.ToString() });
+            }
+
+            return Ok(list);
+        }
 
     }
 }

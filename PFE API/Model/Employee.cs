@@ -38,7 +38,9 @@ namespace PFE_API.Model
         public int NbAnneeExperienceInterne { get; set; }
         public int NbAnneeExperienceExterne { get; set; }
         public int? NbEnfant { get; set; }
+        [EmailAddress]
         public string Email { get; internal set; }
+        public int Score { get; set; }
 
         public Employee() // Parameterless constructor
         {
@@ -76,6 +78,7 @@ namespace PFE_API.Model
             NbAnneeExperienceExterne = nbAnneeExperienceExterne;
             NbEnfant = nbEnfant;
             Email = email;
+            Score = 0;
         }
     }
 

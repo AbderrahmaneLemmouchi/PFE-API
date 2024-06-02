@@ -91,7 +91,7 @@ namespace PFE_API
         {
             using var db = new DBcontext();
             var Demandes =  DemandeDbController.GetDemandesByEmployee(mat).Where(d=> d.DateDebut >= date && (d.Type == TypeDemande.Conge || d.Type == TypeDemande.Absence) && d.EtatActuel == EtatDemande.Acceptee);
-            return Demandes.Any();
+            return !Demandes.Any();
         }
 
         internal static Employee GetEmployeeByEmail(string? email)
@@ -103,6 +103,21 @@ namespace PFE_API
                 return null;
             }
             return employees[0];
+        }
+
+        public static int GetScore(string mat)
+        {
+            using var db = new DBcontext();
+            var employee = db.Employees.Find(mat);
+            return employee.Score;
+        }
+
+        public static void UpdateScore(string mat, int score)
+        {
+            using var db = new DBcontext();
+            var employee = db.Employees.Find(mat);
+            employee.Score = score;
+            db.SaveChanges();
         }
     }
 

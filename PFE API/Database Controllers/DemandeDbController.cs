@@ -19,7 +19,7 @@ namespace PFE_API
             db.SaveChanges();
         }
 
-        public static void Update(Demande demande)
+        public static void Update(Demande demande, string idEmp)
         {
             using var db = new DBcontext();
             var temp = GetDemandeById(demande.ID);
@@ -29,8 +29,7 @@ namespace PFE_API
                 FromEtat = temp.EtatActuel,
                 ToEtat = demande.EtatActuel,
                 Date = DateTime.UtcNow,
-                Par = demande.MatriculeEmp
-                //TODO: Add the matricule of the employee who made the change
+                Par = idEmp
             };
             HistoriqueDbController.Insert(historique);
             db.Demandes.Update(demande);

@@ -89,6 +89,10 @@ namespace PFE_API.Controllers
 
             var user = new User(email, password, role);
 
+            if (EmployeeDbController.GetEmployeeByEmail(email) != null)
+            {
+                return BadRequest("Email already exists");
+            }
 
             EmployeeDbController.Insert(employee);
             LoginDbController.Register(user);
@@ -112,6 +116,39 @@ namespace PFE_API.Controllers
             }
             return NotFound();
         }
+
+        [HttpGet("GetEmployeeScore")]
+        public IActionResult GetEmployeeScore(string mat)
+        {
+            return Ok(EmployeeDbController.GetScore(mat));
+        }
+
+        [HttpPost("UpdateEmployeeScore")]
+        public IActionResult UpdateEmployeeScore(string mat, int score)
+        {
+            EmployeeDbController.UpdateScore(mat, score);
+            return Ok();
+        }
+
+        [HttpGet("isEmployeePresent")]
+        public IActionResult IsEmployeePresent(string mat, DateTime date)
+        {
+            return Ok(EmployeeDbController.IsPresent(mat, DateOnly.FromDateTime(date)));
+        }
+
+        [HttpGet("GetEmployeesByEquipe")]
+        public IActionResult GetEmployeesByEquipe(int idEquipe)
+        {
+            return Ok(EmployeeDbController.GetEmployeesByEquipe(idEquipe));
+        }
+
+        [HttpGet("GetEmployeesByResponsable")]
+        public IActionResult GetEmployeesByResponsable(string idResponsable)
+        {
+            return Ok(EmployeeDbController.GetEmployeesByResponsable(idResponsable));
+        }
+
+
 
         [HttpGet("GetSexe")]
         public IActionResult GetSexe()

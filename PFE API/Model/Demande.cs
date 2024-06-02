@@ -20,9 +20,14 @@ namespace PFE_API.Model
         public DateOnly? DateFin { get; set; }
         public TypeConge? TypeConge { get; set; }
         public DateOnly? JourRecup { get; set; }
-        public bool IsRemuneree { get; set; }
+        public bool? IsRemuneree { get; set; }
         public string? Commentaire { get; set; }
         public Employee? NouvelleInformation { get; set; }
+        //[Url]
+        public string? LienVersJustification { get; set; }
+        [EnumDataType(typeof(TypeImportance))]
+        public TypeImportance Importance { get; set; }
+        
     
         /// <summary>
         /// Constructeur pour une demande de congé
@@ -42,7 +47,7 @@ namespace PFE_API.Model
         /// <param name="commentaire">
         /// Commentaire de l'employé
         /// </param>
-        public Demande(string matriculeEmp, TypeDemande type, DateOnly dateDebut, DateOnly dateFin, string commentaire, TypeConge typeConge) //TODO: Add justification
+        public Demande(string matriculeEmp, TypeImportance importance , TypeDemande type, DateOnly dateDebut, DateOnly dateFin, string commentaire, TypeConge typeConge) //TODO: Add justification
         {
             MatriculeEmp = matriculeEmp;
             Type = type;
@@ -52,6 +57,7 @@ namespace PFE_API.Model
             DateFin = dateFin;
             Commentaire = commentaire;
             TypeConge = typeConge;
+            Importance = importance;
         }
 
         /// <summary>
@@ -75,7 +81,7 @@ namespace PFE_API.Model
         /// <param name="jourRecup">
         /// Jour de récupération
         /// </param>
-        public Demande(string matriculeEmp, TypeDemande type, DateOnly dateDebut, DateOnly dateFin, string commentaire, DateOnly? jourRecup, bool isRemeneree) //TODO: Add justification
+        public Demande(string matriculeEmp, TypeImportance importance, TypeDemande type, DateOnly dateDebut, DateOnly dateFin, string commentaire, DateOnly? jourRecup, bool isRemeneree) //TODO: Add justification
         {
             MatriculeEmp = matriculeEmp;
             Type = type;
@@ -89,6 +95,7 @@ namespace PFE_API.Model
             {
                 JourRecup = jourRecup;
             }
+            Importance = importance;
         }
 
         /// <summary>
@@ -100,13 +107,14 @@ namespace PFE_API.Model
         /// <param name="document">
         /// Le document demandé
         /// </param>
-        public Demande(string matriculeEmp, TypeDocument document)
+        public Demande(string matriculeEmp, TypeImportance importance, TypeDocument document)
         {
             MatriculeEmp = matriculeEmp;
             Type = TypeDemande.Document;
             DateCreation = DateTime.UtcNow;
             EtatActuel = EtatDemande.EnAttente;
             TypeDoc = document;
+            Importance = importance;
         }
 
         /// <summary>
@@ -118,13 +126,14 @@ namespace PFE_API.Model
         /// <param name="nv">
         /// Nouvelles informations de l'employé
         /// </param>
-        public Demande(string matriculeEmp, Employee nv)
+        public Demande(string matriculeEmp, TypeImportance importance, Employee nv)
         {
             MatriculeEmp = matriculeEmp;
             Type = TypeDemande.ChangementInfo;
             DateCreation = DateTime.UtcNow;
             EtatActuel = EtatDemande.EnAttente;
             NouvelleInformation = nv;
+            Importance = importance;
         }
 
         public Demande()
@@ -177,6 +186,13 @@ namespace PFE_API.Model
         BulletinPaie,
         AttestationAffiliationCNAS,
         // Add more as needed...
+    }
+
+    public enum TypeImportance
+    {
+        Faible,
+        Moyenne,
+        Haute
     }
 
 }
