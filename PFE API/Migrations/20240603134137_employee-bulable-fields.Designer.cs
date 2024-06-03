@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PFE_API;
@@ -11,9 +12,11 @@ using PFE_API;
 namespace PFE_API.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    partial class DBcontextModelSnapshot : ModelSnapshot
+    [Migration("20240603134137_employee-bulable-fields")]
+    partial class employeebulablefields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -252,13 +255,13 @@ namespace PFE_API.Migrations
                     b.Property<int?>("Score")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("Sexe")
+                    b.Property<int>("Sexe")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("SituationFamiliale")
+                    b.Property<int>("SituationFamiliale")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("Titre")
+                    b.Property<int>("Titre")
                         .HasColumnType("integer");
 
                     b.Property<string>("WilayaNaissance")

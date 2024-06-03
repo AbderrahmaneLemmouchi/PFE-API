@@ -105,7 +105,7 @@ namespace PFE_API
             return employees[0];
         }
 
-        public static int GetScore(string mat)
+        public static int? GetScore(string mat)
         {
             using var db = new DBcontext();
             var employee = db.Employees.Find(mat);

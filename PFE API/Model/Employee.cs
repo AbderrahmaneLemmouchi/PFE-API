@@ -8,39 +8,39 @@ namespace PFE_API.Model
     {
         [Key]
         public string Matricule { get; set; }
-        public string NSS { get; set; }
-        public string Nom { get; set; }
-        public string Prenom { get; set; }
+        public string? NSS { get; set; }
+        public string? Nom { get; set; }
+        public string? Prenom { get; set; }
         public string? Prenom2 { get; set; }
-        public string NomArabe { get; set; }
-        public string PrenomArabe { get; set; }
+        public string? NomArabe { get; set; }
+        public string? PrenomArabe { get; set; }
         public string? Prenom2Arabe { get; set; }
-        public DateOnly DateNaissance { get; set; }
+        public DateOnly? DateNaissance { get; set; }
         public string? NomJeuneFille { get; set; }
         public string? NomJeuneFilleArabe { get; set; }
-        public string LieuNaissance { get; set; }
-        public string PaysNaissance { get; set; }
-        public string WilayaNaissance { get; set; }
-        public string CommuneNaissance { get; set; }
-        public TypeSexe Sexe { get; set; }
-        public TypeTitre Titre { get; set; }
-        public TypeSituationFamiliale SituationFamiliale { get; set; }
-        public string Nationalites { get; set; }
-        public string LinkToPhoto { get; set; }
-        public int Reliquat { get; set; }
+        public string? LieuNaissance { get; set; }
+        public string? PaysNaissance { get; set; }
+        public string? WilayaNaissance { get; set; }
+        public string? CommuneNaissance { get; set; }
+        public TypeSexe? Sexe { get; set; }
+        public TypeTitre? Titre { get; set; }
+        public TypeSituationFamiliale? SituationFamiliale { get; set; }
+        public string? Nationalites { get; set; }
+        public string? LinkToPhoto { get; set; }
+        public int? Reliquat { get; set; }
         public bool IsResponsable { get; set; }
         [ForeignKey("Equipe")]
-        public int IDEquipe { get; set; }
+        public int? IDEquipe { get; set; }
         [ForeignKey("Employee")]
         public string? IDResponsable { get; set; }
-        public DateOnly DateEntre { get; set; }
+        public DateOnly? DateEntre { get; set; }
         public DateOnly? DateSortie { get; set; }
-        public int NbAnneeExperienceInterne { get; set; }
-        public int NbAnneeExperienceExterne { get; set; }
+        public int? NbAnneeExperienceInterne { get; set; }
+        public int? NbAnneeExperienceExterne { get; set; }
         public int? NbEnfant { get; set; }
         [EmailAddress]
-        public string Email { get; internal set; }
-        public int Score { get; set; }
+        public string? Email { get; internal set; }
+        public int? Score { get; set; }
 
         public Employee() // Parameterless constructor
         {
