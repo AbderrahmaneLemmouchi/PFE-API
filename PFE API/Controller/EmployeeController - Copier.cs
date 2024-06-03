@@ -126,11 +126,6 @@ namespace PFE_API.Controllers
             return Ok(EmployeeDbController.GetScore(mat));
         }
 
-
-
-
-
-
         [HttpPost("UpdateEmployeeScore")]
         public IActionResult UpdateEmployeeScore(string mat, int score)
         {
@@ -149,17 +144,6 @@ namespace PFE_API.Controllers
         {
             return Ok(EmployeeDbController.GetEmployeesByEquipe(idEquipe));
         }
-
-
-
-
-        [HttpGet("GetEmployeesById")]
-        public IActionResult GetEmployeeById(String id)
-        {
-            return Ok(EmployeeDbController.GetEmployeeById(id));
-        }
-
-
 
         [HttpGet("GetEmployeesByResponsable")]
         public IActionResult GetEmployeesByResponsable(string idResponsable)
