@@ -9,6 +9,8 @@ namespace PFE_API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
     public class EmployeeController : ControllerBase
     {
         [Authorize(Roles = "RH")]//(Roles = "RH,Resposable")]
@@ -100,6 +102,25 @@ namespace PFE_API.Controllers
             return Ok();
         }
 
+        [HttpPost("InsertJSON")]
+        public IActionResult InsertEmployee([FromBody] EmployeeDTO employee)
+        { 
+        //    if(string.IsNullOrEmpty(employee.Matricule))
+        //        return BadRequest("Matricule is required");
+
+            var emp = employee.ToEmployee();
+
+            if (EmployeeDbController.GetEmployeeByEmail(employee.Email) != null)
+            {
+                return BadRequest("Email already exists");
+            }
+            EmployeeDbController.Insert(emp);
+
+            var user = new User(employee.Email, employee.password, employee.role);
+            LoginDbController.Register(user);
+            return Ok();
+        }
+
         [Authorize]
         [HttpPost("GetMe")]
         public IActionResult GetByEmail()
@@ -108,6 +129,7 @@ namespace PFE_API.Controllers
             var employee = EmployeeDbController.GetEmployeeByEmail(email);
             var result = EmployeeDTO.FromEmployee(employee);
             return Ok(result);
+            //return Ok();
         }
 
         [HttpDelete]
