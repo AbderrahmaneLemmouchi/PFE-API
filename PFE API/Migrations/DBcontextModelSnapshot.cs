@@ -289,6 +289,9 @@ namespace PFE_API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("rattache")
+                        .HasColumnType("integer");
+
                     b.HasKey("IDEquipe");
 
                     b.ToTable("Equipes");

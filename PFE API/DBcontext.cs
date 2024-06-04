@@ -19,7 +19,7 @@ namespace PFE_API
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Database=testing;Username=postgres;Password=abdou0000");
+            optionsBuilder.UseNpgsql("Host=localhost;Database=testing;Username=postgres;Password=boumanyl");
         }
     }
 }

@@ -12,8 +12,8 @@ using PFE_API;
 namespace PFE_API.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20240509110829_init")]
-    partial class init
+    [Migration("20240603174339_PFE2")]
+    partial class PFE2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,16 +53,25 @@ namespace PFE_API.Migrations
 
             modelBuilder.Entity("PFE_API.Model.Contact", b =>
                 {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
+
                     b.Property<string>("MatriculeEmp")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Type")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Valeur")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("MatriculeEmp", "Type", "Valeur");
+                    b.HasKey("ID");
 
                     b.ToTable("Contacts");
                 });
@@ -128,11 +137,17 @@ namespace PFE_API.Migrations
                     b.Property<int>("EtatActuel")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("IsRemuneree")
+                    b.Property<int>("Importance")
+                        .HasColumnType("integer");
+
+                    b.Property<bool?>("IsRemuneree")
                         .HasColumnType("boolean");
 
                     b.Property<DateOnly?>("JourRecup")
                         .HasColumnType("date");
+
+                    b.Property<string>("LienVersJustification")
+                        .HasColumnType("text");
 
                     b.Property<string>("MatriculeEmp")
                         .IsRequired()
@@ -163,19 +178,21 @@ namespace PFE_API.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("CommuneNaissance")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateOnly>("DateEntre")
+                    b.Property<DateOnly?>("DateEntre")
                         .HasColumnType("date");
 
-                    b.Property<DateOnly>("DateNaissance")
+                    b.Property<DateOnly?>("DateNaissance")
                         .HasColumnType("date");
 
                     b.Property<DateOnly?>("DateSortie")
                         .HasColumnType("date");
 
-                    b.Property<int>("IDEquipe")
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("IDEquipe")
                         .HasColumnType("integer");
 
                     b.Property<string>("IDResponsable")
@@ -185,36 +202,30 @@ namespace PFE_API.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("LieuNaissance")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LinkToPhoto")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("NSS")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Nationalites")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("NbAnneeExperienceExterne")
+                    b.Property<int?>("NbAnneeExperienceExterne")
                         .HasColumnType("integer");
 
-                    b.Property<int>("NbAnneeExperienceInterne")
+                    b.Property<int?>("NbAnneeExperienceInterne")
                         .HasColumnType("integer");
 
                     b.Property<int?>("NbEnfant")
                         .HasColumnType("integer");
 
                     b.Property<string>("Nom")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("NomArabe")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("NomJeuneFille")
@@ -224,11 +235,9 @@ namespace PFE_API.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PaysNaissance")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Prenom")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Prenom2")
@@ -238,23 +247,24 @@ namespace PFE_API.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PrenomArabe")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Reliquat")
+                    b.Property<int?>("Reliquat")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Sexe")
+                    b.Property<int?>("Score")
                         .HasColumnType("integer");
 
-                    b.Property<int>("SituationFamiliale")
+                    b.Property<int?>("Sexe")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Titre")
+                    b.Property<int?>("SituationFamiliale")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("Titre")
                         .HasColumnType("integer");
 
                     b.Property<string>("WilayaNaissance")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Matricule");
@@ -281,6 +291,9 @@ namespace PFE_API.Migrations
                     b.Property<string>("Responsable")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("rattache")
+                        .HasColumnType("integer");
 
                     b.HasKey("IDEquipe");
 
@@ -336,6 +349,35 @@ namespace PFE_API.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Historiques");
+                });
+
+            modelBuilder.Entity("PFE_API.Model.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Matricule")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("PFE_API.Model.Demande", b =>

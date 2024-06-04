@@ -13,7 +13,7 @@ namespace PFE_API.Controller
         [HttpGet("GetDemandesByEmp")]
         public IActionResult GetDemandesByEmp(string Emp)
         {
-            return Ok(DemandeDbController.GetDemandes());
+            return Ok(DemandeDbController.GetDemandesByEmployee(Emp));
         }
 
         [HttpGet("GetDemandesByType")]
@@ -75,18 +75,53 @@ namespace PFE_API.Controller
             }
         }
 
+
+
+
+
+
+
         [Authorize]
-        [HttpPut]
+        [HttpGet("update")]
         public IActionResult UpdateEtat(int id, EtatDemande newEtat)
         {
-            var demande = DemandeDbController.GetDemandeById(id);
-            demande.EtatActuel = newEtat;
+            try
+            {
+                var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                if (email == null)
+                {
+                    return Unauthorized(new { Message = "User email not found in claims" });
+                }
 
-            var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-            var matricule = EmployeeDbController.GetEmployeeByEmail(email).Matricule;
-            DemandeDbController.Update(demande, matricule);
-            return Ok();
+                var employee = EmployeeDbController.GetEmployeeByEmail(email);
+                if (employee == null)
+                {
+                    return Unauthorized(new { Message = "Employee not found" });
+                }
+
+                var demande = DemandeDbController.GetDemandeById(id);
+                if (demande == null)
+                {
+                    return NotFound(new { Message = "Demande not found" });
+                }
+
+                demande.EtatActuel = newEtat;
+                var matricule = employee.Matricule;
+                DemandeDbController.Update(demande, matricule);
+                return Ok(new { Message = "Demande updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (optional)
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An error occurred while updating the demande", Details = ex.Message });
+            }
         }
+
+
+
+
+
+        [Authorize]
 
         [HttpGet("GetTypeDocuments")]
         public IActionResult GetTypeDocuments()

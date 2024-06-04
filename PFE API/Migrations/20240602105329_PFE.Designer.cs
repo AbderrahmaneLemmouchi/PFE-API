@@ -12,8 +12,8 @@ using PFE_API;
 namespace PFE_API.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20240528195550_adeEmail")]
-    partial class adeEmail
+    [Migration("20240602105329_PFE")]
+    partial class PFE
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -137,11 +137,17 @@ namespace PFE_API.Migrations
                     b.Property<int>("EtatActuel")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("IsRemuneree")
+                    b.Property<int>("Importance")
+                        .HasColumnType("integer");
+
+                    b.Property<bool?>("IsRemuneree")
                         .HasColumnType("boolean");
 
                     b.Property<DateOnly?>("JourRecup")
                         .HasColumnType("date");
+
+                    b.Property<string>("LienVersJustification")
+                        .HasColumnType("text");
 
                     b.Property<string>("MatriculeEmp")
                         .IsRequired()
@@ -255,6 +261,9 @@ namespace PFE_API.Migrations
                         .HasColumnType("text");
 
                     b.Property<int>("Reliquat")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Score")
                         .HasColumnType("integer");
 
                     b.Property<int>("Sexe")

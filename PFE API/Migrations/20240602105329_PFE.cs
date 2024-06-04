@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace PFE_API.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class PFE : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,13 +32,15 @@ namespace PFE_API.Migrations
                 name: "Contacts",
                 columns: table => new
                 {
+                    ID = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     MatriculeEmp = table.Column<string>(type: "text", nullable: false),
                     Type = table.Column<string>(type: "text", nullable: false),
                     Valeur = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Contacts", x => new { x.MatriculeEmp, x.Type, x.Valeur });
+                    table.PrimaryKey("PK_Contacts", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -92,7 +94,9 @@ namespace PFE_API.Migrations
                     DateSortie = table.Column<DateOnly>(type: "date", nullable: true),
                     NbAnneeExperienceInterne = table.Column<int>(type: "integer", nullable: false),
                     NbAnneeExperienceExterne = table.Column<int>(type: "integer", nullable: false),
-                    NbEnfant = table.Column<int>(type: "integer", nullable: true)
+                    NbEnfant = table.Column<int>(type: "integer", nullable: true),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    Score = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -147,6 +151,22 @@ namespace PFE_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false),
+                    Role = table.Column<string>(type: "text", nullable: false),
+                    Matricule = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Demandes",
                 columns: table => new
                 {
@@ -161,9 +181,11 @@ namespace PFE_API.Migrations
                     DateFin = table.Column<DateOnly>(type: "date", nullable: true),
                     TypeConge = table.Column<int>(type: "integer", nullable: true),
                     JourRecup = table.Column<DateOnly>(type: "date", nullable: true),
-                    IsRemuneree = table.Column<bool>(type: "boolean", nullable: false),
+                    IsRemuneree = table.Column<bool>(type: "boolean", nullable: true),
                     Commentaire = table.Column<string>(type: "text", nullable: true),
-                    NouvelleInformationMatricule = table.Column<string>(type: "text", nullable: true)
+                    NouvelleInformationMatricule = table.Column<string>(type: "text", nullable: true),
+                    LienVersJustification = table.Column<string>(type: "text", nullable: true),
+                    Importance = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -204,6 +226,9 @@ namespace PFE_API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Historiques");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Employees");

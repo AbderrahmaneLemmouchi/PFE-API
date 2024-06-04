@@ -150,12 +150,12 @@ namespace PFE_API.Model
         Maladie,
         SansSolde,
         Reliquat,
-        //Maternite,
-        //Paternite,
-        //Mariage,
-        //Deuil,
-        //Naissance,
-        //Autre
+        Maternite,
+        Paternite,
+        Mariage,
+        Deuil,
+        Naissance,
+        Autre
     }
 
     public enum TypeDemande
