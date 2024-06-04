@@ -20,40 +20,40 @@ namespace PFE_API.Controllers
             return Ok(EmployeeDbController.GetEmployees());
         }
 
-        [HttpPost]
+        [HttpGet("insert")]
         //[Authorize(Roles = "RH")]
         public IActionResult InsertEmployee(
-                string matricule,
-                string nss,
-                string nom,
-                string prenom,
+                string? matricule,
+                string? nss,
+                string? nom,
+                string? prenom,
                 string? prenom2,
-                string nomArabe,
-                string prenomArabe,
+                string? nomArabe,
+                string? prenomArabe,
                 string? prenom2Arabe,
-                DateTime dateNaissance,
+                DateTime? dateNaissance,
                 string? nomJeuneFille,
                 string? nomJeuneFilleArabe,
-                string lieuNaissance,
-                string paysNaissance,
-                string wilayaNaissance,
-                string communeNaissance,
-                TypeSexe sexe,
-                TypeTitre titre,
-                TypeSituationFamiliale situationFamiliale,
-                string nationalites,
-                int reliquat,
-                bool isResponsable,
-                int idEquipe,
+                string? lieuNaissance,
+                string? paysNaissance,
+                string? wilayaNaissance,
+                string? communeNaissance,
+                string? sexe,
+                string? titre,
+                string? situationFamiliale,
+                string? nationalites,
+                int? reliquat,
+                bool? isResponsable,
+                int? idEquipe,
                 string? idResponsable,
-                DateTime dateEntre,
+                DateTime? dateEntre,
                 //DateTime? dateSortie,
-                int nbAnneeExperienceInterne,
-                int nbAnneeExperienceExterne,
+                int? nbAnneeExperienceInterne,
+                int? nbAnneeExperienceExterne,
                 int? nbEnfant,
-                string email,
-                string password,
-                string role
+                string? email,
+                string? password,
+                string? role
             )
         {
             var employee = new Employee
@@ -66,23 +66,23 @@ namespace PFE_API.Controllers
                 NomArabe = nomArabe,
                 PrenomArabe = prenomArabe,
                 Prenom2Arabe = prenom2Arabe,
-                DateNaissance = DateOnly.FromDateTime(dateNaissance),
+                DateNaissance = DateOnly.FromDateTime(dateNaissance.Value),
                 NomJeuneFille = nomJeuneFille,
                 NomJeuneFilleArabe = nomJeuneFilleArabe,
                 LieuNaissance = lieuNaissance,
                 PaysNaissance = paysNaissance,
                 WilayaNaissance = wilayaNaissance,
                 CommuneNaissance = communeNaissance,
-                Sexe = sexe,
-                Titre = titre,
-                SituationFamiliale = situationFamiliale,
+                Sexe = (TypeSexe)Enum.Parse(typeof(TypeSexe), sexe),
+                Titre = (TypeTitre)Enum.Parse(typeof(TypeTitre), titre),
+                SituationFamiliale = (TypeSituationFamiliale)Enum.Parse(typeof(TypeSituationFamiliale), situationFamiliale),
                 Nationalites = nationalites,
                 LinkToPhoto = "",
                 Reliquat = reliquat,
-                IsResponsable = isResponsable,
+                IsResponsable = isResponsable.Value,
                 IDEquipe = idEquipe,
                 IDResponsable = idResponsable,
-                DateEntre = DateOnly.FromDateTime(dateEntre),
+                DateEntre = DateOnly.FromDateTime(dateEntre.Value),
                 //DateSortie = DateOnly.FromDateTime(dateSortie),
                 NbAnneeExperienceInterne = nbAnneeExperienceInterne,
                 NbAnneeExperienceExterne = nbAnneeExperienceExterne,
@@ -90,14 +90,14 @@ namespace PFE_API.Controllers
                 Email = email
             };
 
-            var user = new User(email, password, role);
 
             if (EmployeeDbController.GetEmployeeByEmail(email) != null)
             {
                 return BadRequest("Email already exists");
             }
-
             EmployeeDbController.Insert(employee);
+
+            var user = new User(email, password, role);
             LoginDbController.Register(user);
             return Ok();
         }
@@ -116,7 +116,7 @@ namespace PFE_API.Controllers
             }
             EmployeeDbController.Insert(emp);
 
-            var user = new User(employee.Email, employee.password, employee.role);
+            var user = new User(employee.Email, employee.Password, employee.Role);
             LoginDbController.Register(user);
             return Ok();
         }

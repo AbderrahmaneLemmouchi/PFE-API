@@ -49,25 +49,25 @@ namespace PFE_API.DTO
         public string? NomJeuneFilleArabe { get; set; }
         public string LieuNaissance { get; set; }
         public string? PaysNaissance { get; set; }
-        public string? WilayaNaissance { get; set; } //
-        public string? CommuneNaissance { get; set; } //
+        public string? WilayaNaissance { get; set; }
+        public string? CommuneNaissance { get; set; }
         public string? Sexe { get; set; }
-        public string? Titre { get; set; } //
+        public string? Titre { get; set; }
         public string? SituationFamiliale { get; set; }
-        public string? Nationalites { get; set; } //
-        public string? LinkToPhoto { get; set; } //
-        public int? Reliquat { get; set; } //
-        public bool? IsResponsable { get; set; } //
+        public string? Nationalites { get; set; }
+        public string? LinkToPhoto { get; set; }
+        public int? Reliquat { get; set; }
+        public bool? IsResponsable { get; set; }
         public int? IDEquipe { get; set; }
-        public string? IDResponsable { get; set; } //
-        public DateOnly? DateEntre { get; set; } //
+        public string? IDResponsable { get; set; }
+        public DateOnly? DateEntre { get; set; }
         public DateOnly? DateSortie { get; set; }
-        public int? NbAnneeExperienceInterne { get; set; } //
-        public int? NbAnneeExperienceExterne { get; set; } //
+        public int? NbAnneeExperienceInterne { get; set; }
+        public int? NbAnneeExperienceExterne { get; set; }
         public int? NbEnfant { get; set; }
         public string? Email { get; set; }
-        public string? password { get; set; }
-        public string? role { get; set; }
+        public string? Password { get; set; }
+        public string? Role { get; set; }
 
         public EmployeeDTO(string? matricule, string nSS, string nom, string prenom, string? prenom2, string nomArabe, string prenomArabe, string? prenom2Arabe, DateOnly dateNaissance, string? nomJeuneFille, string? nomJeuneFilleArabe, string lieuNaissance, string paysNaissance, string wilayaNaissance, string communeNaissance, string sexe, string titre, string situationFamiliale, string nationalites, string linkToPhoto, int reliquat, bool isResponsable, int iDEquipe, string? iDResponsable, DateOnly dateEntre, DateOnly? dateSortie, int nbAnneeExperienceInterne, int nbAnneeExperienceExterne, int? nbEnfant, string email)
         {
@@ -106,37 +106,37 @@ namespace PFE_API.DTO
         public static EmployeeDTO FromEmployee(Employee employee)
         {
             return new EmployeeDTO(
-                               employee.Matricule,
-                                              employee.NSS,
-                                                             employee.Nom,
-                                                                            employee.Prenom,
-                                                                                           employee.Prenom2,
-                                                                                                          employee.NomArabe,
-                                                                                                                         employee.PrenomArabe,
-                                                                                                                                        employee.Prenom2Arabe,
-                                                                                                                                                       employee.DateNaissance.Value,
-                                                                                                                                                                      employee.NomJeuneFille,
-                                                                                                                                                                                     employee.NomJeuneFilleArabe,
-                                                                                                                                                                                                    employee.LieuNaissance,
-                                                                                                                                                                                                                   employee.PaysNaissance,
-                                                                                                                                                                                                                                  employee.WilayaNaissance,
-                                                                                                                                                                                                                                                 employee.CommuneNaissance,
-                                                                                                                                                                                                                                                                employee.Sexe.ToString(),
-                                                                                                                                                                                                                                                                               employee.Titre.ToString(),
-                                                                                                                                                                                                                                                                                              employee.SituationFamiliale.ToString(),
-                                                                                                                                                                                                                                                                                                             employee.Nationalites,
-                                                                                                                                                                                                                                                                                                                            employee.LinkToPhoto,
-                                                                                                                                                                                                                                                                                                                                           employee.Reliquat.Value,
-                                                                                                                                                                                                                                                                                                                                                          employee.IsResponsable,
-                                                                                                                                                                                                                                                                                                                                                                         employee.IDEquipe.Value,
-                                                                                                                                                                                                                                                                                                                                                                                        employee.IDResponsable,
-                                                                                                                                                                                                                                                                                                                                                                                                       employee.DateEntre.Value,
-                                                                                                                                                                                                                                                                                                                                                                                                                      employee.DateSortie,
-                                                                                                                                                                                                                                                                                                                                                                                                                                     employee.NbAnneeExperienceInterne.Value,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                    employee.NbAnneeExperienceExterne.Value,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                   employee.NbEnfant,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  employee.Email
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             );
+                            employee.Matricule,
+                            employee.NSS,
+                            employee.Nom,
+                            employee.Prenom,
+                            employee.Prenom2,
+                            employee.NomArabe,
+                            employee.PrenomArabe,
+                            employee.Prenom2Arabe,
+                            employee.DateNaissance.Value,
+                            employee.NomJeuneFille,
+                            employee.NomJeuneFilleArabe,
+                            employee.LieuNaissance,
+                            employee.PaysNaissance,
+                            employee.WilayaNaissance,
+                            employee.CommuneNaissance,
+                            employee.Sexe.ToString(),
+                            employee.Titre.ToString(),
+                            employee.SituationFamiliale.ToString(),
+                            employee.Nationalites,
+                            employee.LinkToPhoto,
+                            employee.Reliquat.Value,
+                            employee.IsResponsable,
+                            employee.IDEquipe.Value,
+                            employee.IDResponsable,
+                            employee.DateEntre.Value,
+                            employee.DateSortie,
+                            employee.NbAnneeExperienceInterne.Value,
+                            employee.NbAnneeExperienceExterne.Value,
+                            employee.NbEnfant,
+                            employee.Email
+                                                                            );
         }
 
         internal Employee ToEmployee()
